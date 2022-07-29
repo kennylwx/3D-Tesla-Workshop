@@ -1,45 +1,57 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useRef } from "react";
+import {
+  Canvas,
+  useFrame,
+  extend,
+  useThree,
+  ReactThreeFiber,
+} from "@react-three/fiber";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+extend({ OrbitControls });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      orbitControls: ReactThreeFiber.Object3DNode<
+        OrbitControls,
+        typeof OrbitControls
+      >;
+    }
+  }
+}
+const Orbit = () => {
+  const { camera, gl } = useThree();
+  return <orbitControls args={[camera, gl.domElement]} />;
+};
+
+const Box = () => {
+  const ref = useRef<THREE.Mesh>(null!);
+
+  useFrame((state) => {
+    console.log(state);
+    if (ref.current !== null) {
+      ref.current.rotation.x += 0.01;
+      ref.current.rotation.y += 0.01;
+    }
+  });
+  return (
+    <mesh ref={ref}>
+      <boxBufferGeometry />
+      <meshBasicMaterial color="blue" />
+    </mesh>
+  );
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <Canvas style={{ background: "black" }} camera={{ position: [3, 3, 3] }}>
+        {/* <Box /> */}
+        <Orbit />
+        <axesHelper args={[5]} />
+      </Canvas>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

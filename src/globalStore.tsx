@@ -3,6 +3,8 @@ import create from "zustand";
 interface LoginState {
   activeMesh: boolean;
   setActiveMesh: (activeMesh: boolean) => void;
+  color: string;
+  setColor: (color: string) => void;
 }
 
 const useStore = create<LoginState>((set) => ({
@@ -11,6 +13,12 @@ const useStore = create<LoginState>((set) => ({
     set((state) => ({
       ...state,
       activeMesh,
+    })),
+  color: "orange",
+  setColor: (color) =>
+    set((state) => ({
+      ...state,
+      color,
     })),
 }));
 

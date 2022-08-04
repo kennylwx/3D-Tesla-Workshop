@@ -10,7 +10,7 @@ import THREE from "three";
 import useStore from "../../globalStore";
 
 const InteractableBox = (props: ThreeElements["mesh"]) => {
-  const { activeMesh, setActiveMesh } = useStore();
+  const { activeMesh, setActiveMesh, color } = useStore();
 
   const ref = useRef<THREE.Mesh>(null!);
 
@@ -64,7 +64,7 @@ const InteractableBox = (props: ThreeElements["mesh"]) => {
     >
       <boxGeometry />
       <boxBufferGeometry args={[1, 1, 1]} />
-      <meshPhysicalMaterial map={texture} />
+      <meshPhysicalMaterial map={texture} color={color} />
     </mesh>
   );
 };

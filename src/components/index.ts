@@ -9,4 +9,4 @@ export * as SiteModel from "./SiteModel";
 export * as TexturedBox from "./TexturedBox";
 export * as Triangle from "./Triangle";
 
-export * as ColorPicker from "./ColorPicker";
+export { ColorPicker } from "./ColorPicker";

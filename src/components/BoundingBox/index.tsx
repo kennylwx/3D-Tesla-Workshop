@@ -5,7 +5,7 @@ const BoundingBox = ({
   position = [0, 0, 0],
   offset = [0, 0, 0],
   dims = [1, 1, 1],
-  visible = true,
+  visible = false,
   children,
 }) => {
   const [ref, api] = useBox(() => ({
@@ -15,7 +15,7 @@ const BoundingBox = ({
   }));
   return (
     <group ref={ref} api={api}>
-      <mesh scale={dims} visible={visible}>
+      <mesh scale={dims as Triplet} visible={visible}>
         <boxBufferGeometry />
         <meshPhysicalMaterial wireframe />
       </mesh>

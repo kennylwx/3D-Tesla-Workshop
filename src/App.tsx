@@ -53,7 +53,12 @@ function App() {
           {/* Sun Model */}
           <Dragable>
             <Suspense fallback={null}>
-              <BoundingBox visible position={[4, 25, 0]} dims={[25, 25, 25]}>
+              <BoundingBox
+                // visible
+                position={[4, 25, 0]}
+                dims={[20, 20, 20]}
+                // offset={[0, 0, 1]}
+              >
                 <Model path="/sun/scene.gltf" />
               </BoundingBox>
             </Suspense>

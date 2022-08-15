@@ -56,11 +56,43 @@ const Dragable = (props: ThreeElements["mesh"]) => {
         );
       }
     }
+
+    // Drag start
+    // set mass to 0
+    if (controlsRef !== null) {
+      if (controlsRef.current !== null) {
+        controlsRef.current.addEventListener("dragstart", (e) => {
+          e.object.api?.mass.set(0);
+        });
+      }
+    }
+    // Drag end
+    // set mass to 1
+    if (controlsRef !== null) {
+      if (controlsRef.current !== null) {
+        controlsRef.current.addEventListener("dragend", (e) => {
+          e.object.api?.mass.set(1);
+        });
+      }
+    }
+
+    // Drag
+    // change the position
+    // stop velocity (from falling)
+    if (controlsRef !== null) {
+      if (controlsRef.current !== null) {
+        controlsRef.current.addEventListener("drag", (e) => {
+          e.object.api?.position.copy(e.object.position);
+          e.object.api?.velocity.set(0, 0, 0);
+        });
+      }
+    }
   }, [children]);
 
   return (
     <group ref={groupRef}>
       <dragControls
+        transformGroup={true}
         ref={controlsRef}
         args={[children, camera, gl.domElement]}
       />

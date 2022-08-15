@@ -1,24 +1,19 @@
-import { useMemo, useRef, Suspense } from "react";
-import {
-  Canvas,
-  useFrame,
-  extend,
-  useThree,
-  ReactThreeFiber,
-  ThreeElements,
-  useLoader,
-  ThreeEvent,
-} from "@react-three/fiber";
+import { Suspense } from "react";
+import { Canvas, ThreeElements, useLoader } from "@react-three/fiber";
 
 import * as THREE from "three";
 
 import Floor from "./components/Floor";
-import SiteModel from "./components/SiteModel";
+import SiteCombinedModel from "./components/SiteCombinedModel";
 import InteractableBox from "./components/InteractableBox";
 import Bulb from "./components/Bulb";
 import { ColorPicker } from "./components/ColorPicker";
 import { Orbit } from "./components/Orbit";
 import { Dragable } from "./components/Dragable";
+import { Physics } from "@react-three/cannon";
+
+import Model from "./components/Model";
+import BoundingBox from "./components/BoundingBox";
 
 const Background = (props: ThreeElements["mesh"]) => {
   const texture = useLoader(THREE.TextureLoader, "/test-bg-cloud.png");
@@ -35,24 +30,37 @@ function App() {
       <ColorPicker />
       <Canvas
         style={{ background: "#B1D9F4" }}
-        camera={{ position: [5, 5, 5] }}
+        camera={{ position: [50, 50, 50] }}
         shadows
       >
         <Orbit />
         <ambientLight intensity={0.2} />
-        <Bulb position={[0, 10, 0]} />
-        <axesHelper args={[100]} />
-        <Dragable>
-          <Suspense fallback={null}>
-            <InteractableBox position={[-4, 1, 0]} />
-          </Suspense>
-          <Suspense fallback={null}>
-            <InteractableBox position={[4, 1, 0]} />
-          </Suspense>
-        </Dragable>
+        <axesHelper args={[200]} />
+        <Bulb position={[0, 15, 0]} scale={10} />
 
-        {/* <SiteModel position={[0, 11, 0]} /> */}
-        <Floor position={[0, 0, 0]} />
+        <Physics>
+          {/* <Suspense fallback={null}>
+            <Model
+              path="/site-combined-model/Site_Combined_Clouds.gltf"
+              position={[0, 11, 0]}
+            />
+          </Suspense> */}
+
+          {/* <Suspense fallback={null}>
+            <SiteCombinedModel position={[0, 11, 0]} />
+          </Suspense> */}
+
+          {/* Sun Model */}
+          <Dragable>
+            <Suspense fallback={null}>
+              <BoundingBox visible position={[4, 25, 0]} dims={[25, 25, 25]}>
+                <Model path="/sun/scene.gltf" />
+              </BoundingBox>
+            </Suspense>
+          </Dragable>
+
+          <Floor position={[0, 0, 0]} />
+        </Physics>
 
         <Suspense fallback={null}>
           <Background />

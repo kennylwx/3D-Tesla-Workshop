@@ -8,5 +8,6 @@ export * as Orbit from "./Orbit";
 export * as SiteModel from "./SiteModel";
 export * as TexturedBox from "./TexturedBox";
 export * as Triangle from "./Triangle";
+export * as Model from "./Model";
 
 export { ColorPicker } from "./ColorPicker";

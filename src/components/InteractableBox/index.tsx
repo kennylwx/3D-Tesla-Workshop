@@ -6,22 +6,26 @@ import {
   useLoader,
 } from "@react-three/fiber";
 import { useRef } from "react";
-import THREE from "three";
+import THREE, { BufferGeometry, Material, Mesh } from "three";
 import useStore from "../../globalStore";
+import { BoxProps, useBox } from "@react-three/cannon";
 
 const InteractableBox = (props: ThreeElements["mesh"]) => {
   const { activeMesh, setActiveMesh, color } = useStore();
 
-  const ref = useRef<THREE.Mesh>(null!);
+  // const ref = useRef<THREE.Mesh>(null!);
+  const [ref, api] = useBox<Mesh<BufferGeometry, Material | Material[]>>(
+    () => ({ mass: 1, ...props } as BoxProps)
+  );
 
   const texture = useTexture("/wood.jpeg");
 
-  useFrame((state) => {
-    if (ref.current !== null) {
-      ref.current.rotation.x += 0.01;
-      ref.current.rotation.y += 0.01;
-    }
-  });
+  // useFrame((state) => {
+  //   if (ref.current !== null) {
+  //     ref.current.rotation.x += 0.01;
+  //     ref.current.rotation.y += 0.01;
+  //   }
+  // });
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     console.log(e);
@@ -56,6 +60,7 @@ const InteractableBox = (props: ThreeElements["mesh"]) => {
   return (
     <mesh
       ref={ref}
+      api={api}
       {...props}
       castShadow
       onPointerDown={handlePointerDown}
